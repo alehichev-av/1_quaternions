@@ -67,7 +67,7 @@ def test_basis_multiplication(basis_qs):
     assert qmath.isclose(i * j * k, -l)
     assert all(qmath.isclose(mul_table[a][b], basis_qs[a] * basis_qs[b]) for a, b in itt.product(range(4), repeat=2))
 
-def test_algebra(all_qs):
+def test_algebra(all_qs, nonzero_qs):
     """
     Test quaternion addition and multiplication.
 
@@ -81,6 +81,12 @@ def test_algebra(all_qs):
     (a + b) * c = a * c + b * c
     a + b != b + a
 
+    Additive identity, multiplicative identity, additive inverse, multiplicative inverse.
+    0 + a = a + 0 = a
+    1 * a = a * 1 = a
+    a + (-a) = 0
+    a * inverse(a) = 1, a != 0
+
     https://en.wikipedia.org/wiki/Quaternion#Algebraic_properties
     """
     assert all(qmath.isclose((a + b) + c, a + (b + c)) for a, b, c in itt.product(all_qs, repeat=3))
@@ -91,4 +97,8 @@ def test_algebra(all_qs):
     assert all(qmath.isclose((a + b) * c, a * c + b * c) for a, b, c in itt.product(all_qs, repeat=3))
     assert any(not qmath.isclose(a * b, b * a) for a, b in itt.product(all_qs, repeat=2))
 
-
+    assert all(qmath.isclose(quaternion() + a, a) and qmath.isclose(a + quaternion(), a) for a in all_qs)
+    assert all(qmath.isclose(quaternion(1) * a, a) and qmath.isclose(a * quaternion(1), a) for a in all_qs)
+    assert all(qmath.isclose(a + (-1 * a), quaternion()) for a in all_qs)
+    assert all(qmath.isclose(a * qmath.invert(a), quaternion(1)) for a in nonzero_qs)
+    assert all(qmath.isclose(qmath.invert(a) * a, quaternion(1)) for a in nonzero_qs) # idk if this should pass or not

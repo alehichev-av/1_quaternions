@@ -118,7 +118,7 @@ class quaternion:
 
     def __bool__(self) -> bool:
         """Check if a quaternion is strictly not equal to zero."""
-        return any(*self.to_tuple())
+        return any(self.to_tuple())
 
     def __neg__(self) -> quaternion:
         """
@@ -165,7 +165,8 @@ class quaternion:
         """
         Return result of an algebraic division.
 
-        Algebraic in a sense of: (b / a) * a = b
+        Algebraic in a sense of: a / a := a * invert(a) = 1
+                                 b / a := b * invert(a)
 
         ! WARNING !   b / a == b * invert(a) != invert(a) * b
         ! WARNING !   Multiplication is not commutative.
