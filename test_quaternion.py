@@ -102,3 +102,6 @@ def test_algebra(all_qs, nonzero_qs):
     assert all(qmath.isclose(a + (-1 * a), quaternion()) for a in all_qs)
     assert all(qmath.isclose(a * qmath.invert(a), quaternion(1)) for a in nonzero_qs)
     assert all(qmath.isclose(qmath.invert(a) * a, quaternion(1)) for a in nonzero_qs) # idk if this should pass or not
+    with pytest.raises(ZeroDivisionError):
+        qmath.invert(quaternion())
+

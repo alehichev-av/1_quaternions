@@ -19,4 +19,4 @@ pytest
 - To use tests:
   - Create venv: `$ python -m venv venv`
   - Install python requirements: `$ pip install -r requirements.txt`
-  - Run tests: `pytest`
+  - Run tests: `$ pytest --verbose`
