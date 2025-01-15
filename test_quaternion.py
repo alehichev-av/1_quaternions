@@ -105,3 +105,30 @@ def test_algebra(all_qs, nonzero_qs):
     with pytest.raises(ZeroDivisionError):
         qmath.invert(quaternion())
 
+def test_overloads():
+    """Test whether overloaded operators work."""
+    zero = quaternion(0)
+    one  = quaternion(1)
+    two  = quaternion(2)
+
+    """
+    For reference:
+    >>> set(dir(1j)) - set(dir(object()))
+    {'__sub__', '__truediv__', '__pow__', 'conjugate', '__mul__', '__neg__', '__rtruediv__', '__rmul__', '__abs__', '__complex__', 'real', '__pos__', '__radd__', '__add__', '__getnewargs__', '__rsub__', 'imag', '__bool__', '__rpow__'}
+    """
+    assert qmath.isclose(one + , two)
+    assert qmath.isclose(one + 1, two)
+    assert qmath.isclose(1 + one, two)
+
+    assert qmath.isclose(one - one, zero)
+    assert qmath.isclose(one - 1, zero)
+    assert qmath.isclose(1 - one, zero)
+
+    assert qmath.isclose(zero * one, zero)
+    assert qmath.isclose(one * 0, zero)
+    assert qmath.isclose(0 * one, zero)
+    
+    assert qmath.isclose(one / one, one)
+    assert qmath.isclose(one / 1, one)
+    assert qmath.isclose(1 / one, one)
+
