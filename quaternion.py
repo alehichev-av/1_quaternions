@@ -117,7 +117,7 @@ class quaternion:
         return math.sqrt(sqr)
 
     def __bool__(self) -> bool:
-        """Checks if a quaternion is strictly not equal to zero."""
+        """Check if a quaternion is strictly not equal to zero."""
         return any(*self.to_tuple())
 
     def __neg__(self) -> quaternion:
@@ -166,6 +166,11 @@ class quaternion:
         Return result of an algebraic division.
 
         Algebraic in a sense of: (b / a) * a = b
+
+        ! WARNING !   b / a == b * invert(a) != invert(a) * b
+        ! WARNING !   Multiplication is not commutative.
+        ! WARNING !   Use division with caution.
+
         Accepts both quaternion and Real.
         """
         if isinstance(other, Real):
@@ -242,7 +247,7 @@ class qmath:
         if isinstance(base, Real):
             return (math.log(num) + normalized(num.to_imag()) * math.acos(num.a / abs(num))) / math.log(base)
         if isinstance(base, quaternion):
-            return qmath.log(num) / qmath.log(base)
+            return qmath.log(num) * qmath.inverse(qmath.log(base))
 
     @staticmethod
     def pow(base: quaternion | Real, exponent: quaternion | Real):
@@ -271,6 +276,8 @@ class qmath:
         """
         Rotate a vector using a quaternion.
 
+        https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation#Using_quaternions_as_rotations
+
         vec - 3-dimentional vector to be rotated.
         q   - quaternion representing the rotation.
 
@@ -283,11 +290,17 @@ class qmath:
         """
         Rotate a vector using the Rotation type.
 
+        https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation#Using_quaternions_as_rotations
+
         vec      - 3-dimentional vector to be rotated.
         rotation - tuple of (axis, angle in radians).
 
         returns a rotated vector.
         """
         q = quaternion.from_rotation(rotation)
-        return (q * quaternion(0, *vec) * q.conjugate()).to_rotation()[0]
+        return (q * quaternion(0, *vec) * q.conjugate()).to_tuple()[1:]
 
+    @staticmethod
+    def isclose(a: quaternion, b: quaternion, **kwargs) -> bool:
+        """Check if two quaternions are close to each other in value."""
+        return math.isclose(abs(a - b), 0, **kwargs)
