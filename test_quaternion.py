@@ -116,7 +116,7 @@ def test_overloads():
     >>> set(dir(1j)) - set(dir(object()))
     {'__sub__', '__truediv__', '__pow__', 'conjugate', '__mul__', '__neg__', '__rtruediv__', '__rmul__', '__abs__', '__complex__', 'real', '__pos__', '__radd__', '__add__', '__getnewargs__', '__rsub__', 'imag', '__bool__', '__rpow__'}
     """
-    assert qmath.isclose(one + , two)
+    assert qmath.isclose(one + one, two)
     assert qmath.isclose(one + 1, two)
     assert qmath.isclose(1 + one, two)
 

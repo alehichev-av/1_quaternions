@@ -177,9 +177,9 @@ class quaternion:
         if isinstance(other, Real):
             return self * (1 / other)
         if isinstance(other, quaternion):
-            return self * qmath.invert(quaternion)
+            return self * qmath.invert(other)
 
-    def __rtruediv(self, other: Real) -> quaternion:
+    def __rtruediv__(self, other: Real) -> quaternion:
         """Return result of an algebraic division."""
         if isinstance(other, Real):
             return other * qmath.invert(self)
